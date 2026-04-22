@@ -1,0 +1,130 @@
+<h2>Design Section 3: Data Model and Schema</h2>
+<p class="subtitle">A generic property graph that can represent scene placement, structural membership, and free-form relations at the same time</p>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">Core model layers</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+        <div class="placeholder">
+          <strong>Graph entities</strong><br><br>
+          Node<br>
+          Edge<br>
+          NodeType<br>
+          EdgeType
+        </div>
+        <div class="placeholder">
+          <strong>Scene projection</strong><br><br>
+          Scene<br>
+          Node placement<br>
+          Container geometry<br>
+          View state
+        </div>
+        <div class="placeholder">
+          <strong>Schema + template</strong><br><br>
+          fields<br>
+          validation<br>
+          presets<br>
+          template instantiation
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Core entity model</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-body">
+        <h3>Node</h3>
+        <p>Generic instance object. Example types may be world, region, organization, person, item, event, faction, or anything the host schema defines.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Edge</h3>
+        <p>Typed connection between two nodes. Edges carry relation type, direction, metadata, and optional visual style.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Structure edge class</h3>
+        <p>A special edge category for containment / location / composition. This powers container navigation and scene grouping, but still remains an edge, not a hardcoded tree parent field.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Why scene data is separate from graph data</h3>
+  <div class="mockup">
+    <div class="mockup-header">Same graph, different visual layouts</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="placeholder">
+          <strong>Graph layer</strong><br><br>
+          nodes / edges / properties / schema-valid state<br><br>
+          Source of truth
+        </div>
+        <div class="placeholder">
+          <strong>Scene layer</strong><br><br>
+          x/y position<br>
+          size / shape<br>
+          collapsed state<br>
+          selected layout preset<br><br>
+          Visual projection
+        </div>
+      </div>
+      <p style="margin-top:12px;">This split prevents visual edits from mutating business meaning accidentally. A person can move on the canvas without silently changing all memberships or relations.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Recommended schema contract</h3>
+  <div class="mockup">
+    <div class="mockup-header">Host-defined type system</div>
+    <div class="mockup-body">
+      <div class="placeholder">
+        Node types define:
+        display label, icon/shape, allowed fields, container capability, default style, validation rules
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        Edge types define:
+        direction, whether multi-edge is allowed, whether it belongs to the structure class, validation rules, default line style
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        Templates define:
+        starter node set, starter edge set, starter scene layout, optional field defaults
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>What this means for your writing scenario</h3>
+  <div class="options" data-multiselect>
+    <div class="option">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>No fixed world-org-person hierarchy</h3>
+        <p>That writing structure becomes a preset schema + template, not a hardcoded product assumption.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Multi-membership remains valid</h3>
+        <p>One person can belong to multiple organizations because membership is modeled through structure edges, not a single parent pointer.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Multiple scenes can exist later</h3>
+        <p>The same graph can later power different views: world map, organization focus scene, social relation view, or chapter-specific subgraph.</p>
+      </div>
+    </div>
+  </div>
+</div>

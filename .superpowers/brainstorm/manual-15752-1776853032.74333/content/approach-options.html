@@ -1,0 +1,98 @@
+<h2>Graph Modeling Module: Architecture Options</h2>
+<p class="subtitle">Goal: reusable graph modeling module for writing products first, other products later</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Single React Package</h3>
+      <p>State, rendering, schema, storage adapters, and editor UI live in one package.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Fastest to start</li>
+            <li>API surface is small</li>
+            <li>Easy for one host app to consume</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Low reuse across frameworks</li>
+            <li>Hard to swap storage or renderer</li>
+            <li>UI and core become tightly coupled</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Headless Core + React Bindings + UI Kit</h3>
+      <p>Core graph engine is framework-agnostic. React layer handles state subscription. Editor widgets are optional packages.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Best long-term reuse</li>
+            <li>Clear separation: model, storage, UI</li>
+            <li>Easy to embed partially or fully</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>More upfront design work</li>
+            <li>Requires stronger package boundaries</li>
+            <li>Testing matrix is slightly larger</li>
+          </ul>
+        </div>
+      </div>
+      <p><strong>Recommended:</strong> fits your requirement for a reusable graph module before the full agent framework.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Graph Service First</h3>
+      <p>Put graph logic behind a local/remote service, then build a thin React editor against that API.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Good for multi-client consistency</li>
+            <li>Natural path to remote sync and permissions</li>
+            <li>Backend ownership is explicit</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Too heavy for first milestone</li>
+            <li>Weak offline/local-first story at the start</li>
+            <li>Slows editor interaction work</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Recommendation Summary</h3>
+  <div class="mockup">
+    <div class="mockup-header">Recommended package boundary</div>
+    <div class="mockup-body">
+      <div class="mock-nav">Host App</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;">
+        <div class="placeholder">graph-core<br>graph model, commands, schema, validation, storage ports</div>
+        <div class="placeholder">graph-react<br>state bindings, hooks, view model, host integration</div>
+        <div class="placeholder">graph-editor<br>canvas, tree view, inspector, template flow</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<h2>Design Section 4: Interaction Model and Storage Boundaries</h2>
+<p class="subtitle">Dragging must have meaning without collapsing the model into a single-parent tree</p>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">Primary drag interaction</div>
+    <div class="mockup-body">
+      <div style="position:relative;height:360px;border:1px solid #d8d1c3;border-radius:18px;background:linear-gradient(180deg,#f7f1e6,#efe6d3);overflow:hidden;">
+        <div style="position:absolute;top:22px;left:24px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#556;">World Scene</div>
+
+        <div style="position:absolute;top:78px;left:120px;width:220px;height:220px;border:3px solid #a65c4c;border-radius:50%;background:rgba(220,120,100,.12);">
+          <div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-weight:700;color:#7b3426;">Organization A</div>
+        </div>
+
+        <div style="position:absolute;top:110px;left:450px;width:180px;height:180px;border:3px solid #3d7a63;border-radius:50%;background:rgba(90,170,130,.12);">
+          <div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-weight:700;color:#225744;">Organization B</div>
+        </div>
+
+        <div style="position:absolute;top:160px;left:385px;width:62px;height:42px;border-radius:8px;border:2px solid #4c4c4c;background:#f8f8ff;text-align:center;line-height:38px;font-size:12px;box-shadow:0 10px 22px rgba(0,0,0,.14);">P5</div>
+
+        <div style="position:absolute;top:246px;left:284px;width:250px;padding:12px 14px;background:rgba(255,255,255,.95);border:1px solid #d6cfbf;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.12);">
+          <div style="font-weight:700;margin-bottom:8px;">Candidate action</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="padding:7px 10px;background:#203040;color:#fff;border-radius:999px;font-size:12px;">Join Organization A</span>
+            <span style="padding:7px 10px;background:#6c8d5d;color:#fff;border-radius:999px;font-size:12px;">Set as primary membership</span>
+            <span style="padding:7px 10px;background:#d9d0bf;color:#473e33;border-radius:999px;font-size:12px;">Keep layout only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Interaction rules locked in</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-body">
+        <h3>Drag always changes scene state</h3>
+        <p>Node position, z-index, container-relative placement, and user-created clustering are persisted as scene data. Layout work is first-class user input, not throwaway decoration.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Drag into container creates a candidate command</h3>
+        <p>The system infers a likely modeling action but does not silently mutate structural edges. A confirmation strip or context menu turns that candidate into an explicit command.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Inspector remains authoritative for exact semantics</h3>
+        <p>Quick actions speed up modeling, but the inspector shows and edits the final set of memberships, roles, and relation properties.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Command pipeline</h3>
+  <div class="mockup">
+    <div class="mockup-header">Every meaningful edit becomes a command</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;gap:8px;align-items:center;">
+        <div class="placeholder">UI gesture<br>drag / resize / connect / create / confirm candidate action</div>
+        <div style="text-align:center;font-size:28px;">→</div>
+        <div class="placeholder">Command<br>MoveNodeInScene<br>AddStructureEdge<br>SetPrimaryMembership<br>CreateRelationEdge</div>
+        <div style="text-align:center;font-size:28px;">→</div>
+        <div class="placeholder">Core applies validation, updates graph + scene, appends history entry, emits subscribers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Storage and sync boundary</h3>
+  <div class="mockup">
+    <div class="mockup-header">Local-first, remote-ready</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="placeholder">
+          <strong>Local adapter responsibilities</strong><br><br>
+          load graph bundle<br>
+          persist snapshots or op-log<br>
+          recover unsynced edits<br>
+          restore scene state fast
+        </div>
+        <div class="placeholder">
+          <strong>Remote adapter responsibilities</strong><br><br>
+          push commands or patches<br>
+          fetch new versions<br>
+          resolve revision mismatch<br>
+          report sync status to host app
+        </div>
+      </div>
+      <p style="margin-top:12px;">The core should expose storage ports and sync events, but it should not hardcode a backend. A writing app can store to local IndexedDB today and sync to its own service later.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Error handling and guardrails</h3>
+  <div class="options" data-multiselect>
+    <div class="option">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>Rejected candidate actions are non-destructive</h3>
+        <p>If the user cancels the quick action after dragging into a container, only the scene placement stays. No hidden structural mutation should remain.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Invalid commands fail with explicit reason</h3>
+        <p>If schema rules forbid a membership or relation, the quick action is disabled or returns a clear validation message.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Sync errors do not block local editing</h3>
+        <p>Remote failure marks pending changes and exposes conflict state, but local work continues until the host app resolves sync.</p>
+      </div>
+    </div>
+  </div>
+</div>

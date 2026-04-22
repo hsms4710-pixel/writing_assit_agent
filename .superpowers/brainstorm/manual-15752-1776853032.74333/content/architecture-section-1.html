@@ -1,0 +1,112 @@
+<h2>Design Section 1: Module Architecture</h2>
+<p class="subtitle">Recommended structure for a reusable graph modeling module embedded into React/Next.js hosts</p>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">Package Boundary</div>
+    <div class="mockup-body">
+      <div class="mock-nav">Host Product: writing app, RP app, worldbuilding app, other business apps</div>
+      <div style="display:grid;grid-template-columns:1.1fr 1fr 1.2fr;gap:14px;margin-top:12px;">
+        <div class="placeholder">
+          <strong>@graph/core</strong><br><br>
+          graph store<br>
+          commands / history<br>
+          schema + validation<br>
+          template instantiation<br>
+          query / traversal<br>
+          storage ports<br>
+          sync ports
+        </div>
+        <div class="placeholder">
+          <strong>@graph/react</strong><br><br>
+          provider<br>
+          hooks<br>
+          selectors<br>
+          host lifecycle bridge<br>
+          view model binding
+        </div>
+        <div class="placeholder">
+          <strong>@graph/editor</strong><br><br>
+          canvas view<br>
+          structure tree view<br>
+          inspector panel<br>
+          template picker<br>
+          search / filter<br>
+          interaction presets
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Why this split</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-body">
+        <h3>Core stays reusable</h3>
+        <p>No React dependency. The graph model, commands, persistence ports, and sync rules can be reused by other apps or wrapped for other frameworks later.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>React remains thin</h3>
+        <p>The React package only connects host apps and UI to the core store. That keeps state logic out of components and avoids lock-in to one editor shell.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Editor is optional</h3>
+        <p>A host can embed the full editor, just the canvas, just the inspector, or only consume the core and build a custom UI.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Runtime Flow</h3>
+  <div class="mockup">
+    <div class="mockup-header">Interaction and persistence flow</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;gap:8px;align-items:center;">
+        <div class="placeholder">User action in editor<br>drag, create, connect, edit field, apply template</div>
+        <div style="text-align:center;font-size:28px;">→</div>
+        <div class="placeholder">Core command pipeline<br>validate → normalize → apply → history entry</div>
+        <div style="text-align:center;font-size:28px;">→</div>
+        <div class="placeholder">Persistence adapters<br>local snapshot / op log<br>remote sync queue</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:8px;align-items:center;margin-top:12px;">
+        <div class="placeholder">Selectors + subscriptions feed canvas, tree, inspector, search results</div>
+        <div style="text-align:center;font-size:28px;">←</div>
+        <div class="placeholder">State updates are emitted once from the core store, then consumed by React bindings</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Design Decisions Locked In</h3>
+  <div class="options" data-multiselect>
+    <div class="option">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>Graph-first, not tree-first</h3>
+        <p>The tree view is a projection based on structure edges. The source of truth is still a generic property graph.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Local-first by default</h3>
+        <p>All editing works locally. Remote sync is an adapter, not a requirement for using the module.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Composable UI surface</h3>
+        <p>Canvas, tree, inspector, and template workflows are separate exportable widgets, not one inseparable page.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<h2>Design Section 5: V1 Deliverables, Testing, and Non-Goals</h2>
+<p class="subtitle">Closing the scope so the first implementation stays product-usable without absorbing the full agent framework</p>
+
+<div class="section">
+  <h3>V1 package outputs</h3>
+  <div class="mockup">
+    <div class="mockup-header">What the first milestone should ship</div>
+    <div class="mockup-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div class="placeholder">
+          <strong>@graph/core</strong><br><br>
+          graph store<br>
+          command system<br>
+          undo / redo history<br>
+          schema validation<br>
+          template instantiation<br>
+          storage and sync ports
+        </div>
+        <div class="placeholder">
+          <strong>@graph/react</strong><br><br>
+          provider<br>
+          selectors and hooks<br>
+          host integration API<br>
+          save/sync status bridge<br>
+          command dispatch helpers
+        </div>
+        <div class="placeholder">
+          <strong>@graph/editor</strong><br><br>
+          world scene canvas<br>
+          container zones<br>
+          relation drawing<br>
+          inspector<br>
+          schema-driven create flow<br>
+          template starter flow
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>V1 editor surface</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-body">
+        <h3>Scene Canvas</h3>
+        <p>Main workspace for pan, zoom, place nodes, move nodes between areas, draw relations, and inspect the world visually.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Inspector Panel</h3>
+        <p>Authoritative editor for fields, memberships, relation properties, validation errors, and quick action confirmation.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Structure Navigator</h3>
+        <p>Secondary outline for focus, search, collapse, and quick jumping across large graphs. Support view, not the primary scene model.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Template Picker</h3>
+        <p>Load a schema-defined starter world or starter subgraph, then continue editing manually.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Relation Tools</h3>
+        <p>Create and edit typed edges, including visual differentiation for structure edges versus general relation edges.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Status Bar</h3>
+        <p>Show dirty state, save state, sync state, and validation counts so the host product can surface reliability clearly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Testing strategy</h3>
+  <div class="mockup">
+    <div class="mockup-header">Quality gates for a reusable module</div>
+    <div class="mockup-body">
+      <div class="placeholder">
+        <strong>Core unit tests</strong><br>
+        command semantics, schema validation, structure-edge rules, template expansion, undo/redo, snapshot recovery
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        <strong>Adapter contract tests</strong><br>
+        local adapter save/load behavior, sync adapter event contract, pending change recovery, revision mismatch handling
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        <strong>React integration tests</strong><br>
+        provider lifecycle, selector updates, command dispatch from components, host subscription behavior
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        <strong>Editor interaction tests</strong><br>
+        drag node, drag into container, confirm candidate action, cancel candidate action, create relation, inspector edits
+      </div>
+      <div class="placeholder" style="margin-top:10px;">
+        <strong>Performance checks</strong><br>
+        browse and edit graphs in the target B range: hundreds to low thousands of nodes, with relation-heavy scenes
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Explicit V1 non-goals</h3>
+  <div class="options" data-multiselect>
+    <div class="option">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>No natural-language graph generation yet</h3>
+        <p>The module will expose command APIs that an LLM can call later, but V1 does not include NL parsing or agent orchestration.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>No real-time multi-user collaboration</h3>
+        <p>Remote sync boundaries are designed in, but live collaborative editing is deferred.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>No hardcoded writing domain model</h3>
+        <p>Writing presets exist as schema and template examples, not as product-level assumptions baked into the engine.</p>
+      </div>
+    </div>
+    <div class="option">
+      <div class="letter">4</div>
+      <div class="content">
+        <h3>No backend service requirement</h3>
+        <p>The module must work in local-only mode inside a host product.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Success criteria for V1</h3>
+  <div class="mockup">
+    <div class="mockup-header">When this milestone is done</div>
+    <div class="mockup-body">
+      <div class="placeholder">
+        A host React app can embed the editor, load a schema + template, create and edit a graph visually, persist it locally, restore it correctly, and prepare for later remote sync without changing the core model.
+      </div>
+    </div>
+  </div>
+</div>
