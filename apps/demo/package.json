@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@graph/core": "workspace:*",
+    "@graph/editor": "workspace:*",
+    "@graph/react": "workspace:*",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  }
+}

@@ -1,0 +1,25 @@
+.graph-editor-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+.scene-canvas {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f6f0e5 0%, #efe4d2 100%);
+}
+
+.scene-node {
+  position: absolute;
+  padding: 10px 14px;
+  border: 2px solid #39404a;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.scene-node--organization {
+  border-radius: 999px;
+  background: rgba(197, 109, 88, 0.14);
+}
